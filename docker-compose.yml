@@ -1,0 +1,24 @@
+services:
+  web:
+    image: php:8.2-apache    #check the php version you need for your project
+    ports:
+      - "80:80"    #this line maps your pc port to the container port
+    depends_on:
+      - db    #this line links this container to the db container
+    volumes:
+      - ./html:/var/www/html    #this line maps the content of ./html in your pc to the /var/www/html of the container
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_USER=myuser
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=lamp_db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"    #this line maps your pc port to the container port
+    depends_on:
+      - db    #this line links this container to the db container
+    environment:
+      PMA_HOST: db
